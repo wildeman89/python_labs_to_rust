@@ -4,13 +4,19 @@ use std::io::{BufReader, BufRead};
 fn main() {
     let mut xmat: [[i32; 3]; 5] = [[0; 3]; 5];
     let mut ymat: [[i32; 7]; 3] = [[0; 7]; 3];
+    // zmat is xmat * ymat. So it has the rows of xmat, cols of ymat
+    let mut zmat: [[i32; 7]; 5] = [[0; 7]; 5];
 
-    println!("{:?}", xmat);
     load_xmat(&mut xmat);
-    println!("{:?}", xmat);
-    println!("{:?}", ymat);
     load_ymat(&mut ymat);
-    println!("{:?}", ymat);
+    load_zmat(&xmat, &ymat, &mut zmat);
+    let (xsum, ysum) = compute_sums(&xmat, &ymat);
+    let small = get_smallest(&ymat);
+    display_matrix(&xmat, &ymat, &zmat);
+    println!("Xmat Sum: {}", xsum);
+    println!("Ymat Sum: {}", ysum);
+    println!("Sum: {}", xsum+ysum);
+    println!("Smallest: {}", small);
 }
 
 fn read_file(file_name: &str) -> Vec<i32> {
@@ -47,4 +53,69 @@ fn load_ymat(matrix: &mut [[i32;7];3]) {
             index += 1;
         }
     }
+}
+
+fn load_zmat(amat: &[[i32;3];5], bmat: &[[i32;7]; 3], cmat: &mut [[i32;7];5]) {
+    for row in 0..5 {
+        for col in 0..7 {
+            let mut val: i32 = 0;
+            for i in 0..3 {
+                val += amat[row][i] * bmat[i][col];
+            }
+            cmat[row][col] = val;
+        }
+    }
+}
+
+fn compute_sums(amat: &[[i32;3];5], bmat: &[[i32;7];3]) -> (i32, i32) {
+    let mut amat_sum: i32 = 0;
+    let mut bmat_sum: i32 = 0;
+
+    for row in amat {
+        amat_sum += row[2];
+    }
+
+    for col in bmat[2] {
+        bmat_sum += col;
+    }
+    (amat_sum, bmat_sum)
+}
+
+fn get_smallest(matrix: &[[i32;7];3]) -> i32 {
+    let mut small: i32 = 0;
+    for col in matrix[1] {
+        if small > col {
+            small = col;
+        }
+    }
+    small
+}
+
+fn display_matrix(mat1: &[[i32;3];5], mat2: &[[i32;7];3], mat3: &[[i32;7];5]) {
+    println!("X Matrix");
+    for row in 0..mat1.len() {
+        for col in mat1[row] {
+            print!("{:^5}", col);
+        }
+        println!("");
+    }
+    println!("");
+
+    println!("Y Matrix");
+    for row in 0..mat2.len() {
+        for col in mat2[row] {
+            print!("{:^5}", col);
+        }
+        println!("");
+    }
+    println!("");
+
+    println!("Z Matrix");
+    for row in 0..mat3.len() {
+        for col in mat3[row] {
+            print!("{:^7}", col);
+        }
+        println!("");
+    }
+    println!("");
 }
