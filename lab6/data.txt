@@ -1,0 +1,10 @@
+The Ivory House,Health,yes,4,yes
+Russo's,Pizza,yes,2,yes
+Hunan,Chinese,no,2,yes
+Stringate,Health,no,2,yes
+Beijing,Seafood,no,1,yes
+Banana Cabana,Beverage,no,1,no
+Seafood,Seafood,no,1,yes
+El Rancho,Mexican,no,1,no
+Fisherman,Seafood,no,2,yes
+Dragon Inn,Chinese,no,3,no
